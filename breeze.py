@@ -1,14 +1,13 @@
 import hashlib
 
 class Breeze_block:
+
     def __init__(self, transactions, previous_hash, difficulty):
         self.transactions = transactions
         self.previous_hash = previous_hash
         self.difficulty = difficulty
-
-    def raw_hash(transactions, previous_hash):
         raw = str(transactions) + "-" + str(previous_hash)
-        return hashlib.sha256(raw)
+        raw_hash = hashlib.sha256(raw)
 
     def proof_of_work(transactions, previous_hash, difficulty):
         max_nonce = 2 ** 32
@@ -24,8 +23,24 @@ class Breeze_block:
 
         return final_nonce, hash_result
 
+    def generate_block(transactions, previous_hash, difficulty):
+        nonce, hash = proof_of_work(transactions, previous_hash, difficulty)
+
+
+
+
 def main():
-    return TODO
+    print("Type in which action you want to take: \n")
+    print("- Transact\n")
+    print("- Create Block\n")
+    action = input("Enter: ")
+    if action.lower() == "transact":
+        print("Transaction complete")
+    elif action.lower() == "create block":
+        print("Block Created")
+    else:
+        print("Invalid Input")
+
 
 if __name__ == "__main__":
     main()
