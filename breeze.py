@@ -6,7 +6,7 @@ def coprime(a, b):
     return bltin_gcd(a, b) == 1
 
 def generate_key_pair():
-    p = int(random.randrange(1000,2000))
+    p = int(random.randrange(10000,20000))
     q = p+1
     while 1:
         if coprime(p,q):
@@ -25,13 +25,12 @@ def generate_key_pair():
         d = (k * totient_n+1)/e
         if int(d) == d:
             break
+        k += 1
     public_key = str(n) + "-" + str(e)
-    private_key = str(d)
+    private_key = str(int(d))
     print("Public Key: " + public_key)
     print("Private Key: " + private_key)
     print("Store key-pairs in a safe, easily accessible location. They are your Breeze identity")
-
-
 
 class Breeze_block:        
 
@@ -64,16 +63,6 @@ class Breeze_block:
 
         message = str(current_coin) + "-" + str(public_key)
         md = hashlib.sha256(message)
-
-
-
-
-    
-
-        
-
-
-
 
 def main():
     print("Type in the number of the action you want to take: \n")
