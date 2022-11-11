@@ -45,15 +45,15 @@ class Breeze_block:
         hash_result = 0
         final_nonce = 0
         for nonce in range(max_nonce):
-            hash_result = hashlib.sha256(str(transactions)+"-"+str(previous_hash)+"-"+str(nonce)).hexdigest()
-            if str(hash_result)[0,difficulty] == a.zfill(difficulty):
+            hash_result = hashlib.sha256((str(transactions)+"-"+str(previous_hash)+"-"+str(nonce)).encode('utf-8')).hexdigest
+            if (str(hash_result))[0,int(difficulty)] == a.zfill(int(difficulty)):
                 final_nonce = nonce
                 break
         return final_nonce, hash_result
 
     def generate_block(self,transactions, previous_hash, difficulty):
         nonce, hash = self.proof_of_work(transactions, previous_hash, difficulty)
-        block = str(transactions) + "-" + str(previous_hash)+ "-" + str(nonce) + "-" + str(hash)
+        block = str(transactions) + "-" + str(previous_hash)+ "-" #+ str(nonce) + "-" + str(hash)
         print(block)
     
     def transact():
@@ -73,9 +73,9 @@ def main():
     if action.lower() == "1":
         print("Transaction complete")
     elif action.lower() == "2":
-        transactions  = input("transactions")
-        previous_hash = input("previous_hash")
-        difficulty = input("difficulty")
+        transactions  = input("transactions: ")
+        previous_hash = input("previous_hash: ")
+        difficulty = input("difficulty: ")
         block = Breeze_block(transactions,previous_hash,difficulty)
         block.generate_block(transactions,previous_hash,difficulty)
     elif action.lower() == "3":
