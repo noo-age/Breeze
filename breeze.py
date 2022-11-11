@@ -44,16 +44,18 @@ class Breeze_block:
         a = ""
         hash_result = 0
         final_nonce = 0
+        print(a.zfill(int(difficulty)))
         for nonce in range(max_nonce):
             hash_result = hashlib.sha256((str(transactions)+"-"+str(previous_hash)+"-"+str(nonce)).encode('utf-8')).hexdigest
-            if (str(hash_result))[0,int(difficulty)] == a.zfill(int(difficulty)):
+            if (str(hash_result))[0:int(difficulty)] == a.zfill(int(difficulty)):
                 final_nonce = nonce
                 break
+            print(str(hash_result))
         return final_nonce, hash_result
 
     def generate_block(self,transactions, previous_hash, difficulty):
         nonce, hash = self.proof_of_work(transactions, previous_hash, difficulty)
-        block = str(transactions) + "-" + str(previous_hash)+ "-" #+ str(nonce) + "-" + str(hash)
+        block = str(transactions) + "-" + str(previous_hash)+ "-" + str(nonce) + "-" + str(hash)
         print(block)
     
     def transact():
