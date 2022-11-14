@@ -6,7 +6,7 @@ def coprime(a, b):
     return bltin_gcd(a, b) == 1
 
 def generate_key_pair():
-    p = int(random.randrange(10000,20000))
+    p = int(random.randrange(10000,20000)) 
     q = p+1
     while 1:
         if coprime(p,q):
@@ -27,10 +27,31 @@ def generate_key_pair():
             break
         k += 1
     public_key = str(n) + "-" + str(e)
-    private_key = str(int(d))
+    private_key = str(n)+ "-" + str(int(d))
     print("Public Key: " + public_key)
     print("Private Key: " + private_key)
     print("Store key-pairs in a safe, easily accessible location. They are your Breeze identity")
+    
+def encrypt():
+    m = int(input("Message: "))
+    pub_key = input("Public key: ")
+    n = int(pub_key.split('-')[0])
+    e = int(pub_key.split('-')[1])
+    md = 1
+    for i in range(e):
+        md = (md * m) % n
+    print(m)
+        
+def decrypt():
+    md = int(input("Message: "))
+    priv_key = input("Private key: ")
+    n = int(priv_key.split('-')[0])
+    d = int(priv_key.split('-')[1])
+    m = 1
+    for i in range(d):
+        m = (m * md) % n
+    print(md)
+    
 
 class Breeze_block:        
 
@@ -68,9 +89,10 @@ class Breeze_block:
 
 def main():
     print("Type in the number of the action you want to take: \n")
-    print("1 - Transact\n")
-    print("2 - Create Block\n")
+    print("1 - Transact")
+    print("2 - Create Block")
     print("3 - Generate key-pair")
+    print("4 - Encrypt/decrypt a message")
     action = input("Enter: ")
     if action.lower() == "1":
         print("Transaction complete")
@@ -82,6 +104,15 @@ def main():
         block.generate_block(transactions,previous_hash,difficulty)
     elif action.lower() == "3":
         generate_key_pair()
+    elif action.lower() == "4":
+        print("Type in the number of the action you want to take: \n")
+        print("1 - Encrypt a message")
+        print("2 - Decrypt a message")
+        action = input("Enter: ")
+        if action.lower() == "1":
+            encrypt()
+        elif action.lower() == "2":
+            decrypt()
     else:
         print("Invalid Input")
 
