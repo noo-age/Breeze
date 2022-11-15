@@ -40,7 +40,7 @@ def encrypt():
     md = 1
     for i in range(e):
         md = (md * m) % n
-    print(m)
+    print(md)
         
 def decrypt():
     md = int(input("Message: "))
@@ -50,7 +50,7 @@ def decrypt():
     m = 1
     for i in range(d):
         m = (m * md) % n
-    print(md)
+    print(m)
     
 
 class Breeze_block:        
