@@ -13,7 +13,7 @@ def generate_key_pair():
             break
         q += 1
     n = p*q
-    totient_n = n * (1-1/p) * (1-1/q)
+    totient_n = (q -1) * (p-1)
     e = random.randrange(50,100)
     while 1:
         if coprime(n,e):
