@@ -53,7 +53,7 @@ def decrypt():
     m = 1
     for i in range(d):
         m = (m * md) % n
-    print(m.decode('ASCII'))
+    print(str(md))
     
 
 class Breeze_block:        
@@ -129,6 +129,8 @@ def main():
                     break       
         else:
             print("Invalid Input")
+        if exit:
+            break
 
 
 if __name__ == "__main__":
