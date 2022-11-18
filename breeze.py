@@ -54,7 +54,6 @@ def decrypt():
         m = (m * md) % n
     print(str(md))
 
-    test
     
 class Breeze_block:        
 
