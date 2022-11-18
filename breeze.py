@@ -35,7 +35,6 @@ def generate_key_pair():
     
 #TODO Fix
 def encrypt():
-    #m = input("Message: ").encode('ASCII')
     m = int.from_bytes(input("Message: ").encode('ASCII'), byteorder='big')
     pub_key = input("Public key: ")
     n = int(pub_key.split('-')[0])
@@ -46,7 +45,7 @@ def encrypt():
     print(md)
         
 def decrypt():
-    md = int.from_bytes(input("Message: ").encode('ASCII'), byteorder='big')
+    md = int(input("Message: "))
     priv_key = input("Private key: ")
     n = int(priv_key.split('-')[0])
     d = int(priv_key.split('-')[1])
@@ -54,8 +53,9 @@ def decrypt():
     for i in range(d):
         m = (m * md) % n
     print(str(md))
-    
 
+    test
+    
 class Breeze_block:        
 
     def __init__(self, transactions, previous_hash, difficulty):
