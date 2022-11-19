@@ -1,5 +1,6 @@
 import hashlib
 import random
+import math
 from math import gcd as bltin_gcd
 
 def coprime(a, b):
@@ -32,10 +33,15 @@ def generate_key_pair():
     print("Private Key: " + private_key)
     print("Store key-pairs in a safe, easily accessible location. They are your Breeze identity\n")
     
-    
+def convertToNumber (s):
+    return int.from_bytes(s.encode(), 'big')
+
+def convertFromNumber (n):
+    return n.to_bytes(math.ceil(n.bit_length() / 8), 'big').decode()
+
 #TODO Fix
 def encrypt():
-    m = int.from_bytes(input("Message: ").encode('ASCII'), byteorder='big')
+    m = convertToNumber(input("Message: "))
     pub_key = input("Public key: ")
     n = int(pub_key.split('-')[0])
     e = int(pub_key.split('-')[1])
@@ -52,7 +58,7 @@ def decrypt():
     m = 1
     for i in range(d):
         m = (m * md) % n
-    print(str(md))
+    print(convertFromNumber(m))
 
     
 class Breeze_block:        
