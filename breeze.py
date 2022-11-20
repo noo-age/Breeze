@@ -37,28 +37,30 @@ def convertToNumber (s):
     return int.from_bytes(s.encode(), 'big')
 
 def convertFromNumber (n):
-    return n.to_bytes(math.ceil(n.bit_length() / 8), 'big').decode()
+    return n.to_bytes(math.ceil(n.bit_length()/8), 'big').decode('latin-1')
 
 #TODO Fix
 def encrypt():
-    m = convertToNumber(input("Message: "))
+    #m = convertToNumber(input("Message: "))
+    m = int(input("Message"))
     pub_key = input("Public key: ")
     n = int(pub_key.split('-')[0])
     e = int(pub_key.split('-')[1])
     md = 1
     for i in range(e):
         md = (md * m) % n
-    print(md)
+    print("Encrypted Message" + md)
         
 def decrypt():
-    md = int(input("Message: "))
+    md = int(input("Encrypted Message: "))
     priv_key = input("Private key: ")
     n = int(priv_key.split('-')[0])
     d = int(priv_key.split('-')[1])
     m = 1
     for i in range(d):
         m = (m * md) % n
-    print(convertFromNumber(m))
+    #print(convertFromNumber(m))
+    print("Decrypted Message:" + m)
 
     
 class Breeze_block:        
