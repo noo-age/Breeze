@@ -40,27 +40,26 @@ def convertFromNumber (n):
     return n.to_bytes(math.ceil(n.bit_length()/8), 'big').decode('latin-1')
 
 #TODO Fix
-def encrypt():
-    #m = convertToNumber(input("Message: "))
-    m = int(input("Message"))
-    pub_key = input("Public key: ")
+def encrypt(m, pub_key):
+    #m = convertToNumber(input("Message: ")) fix input
+    m = int(m)
     n = int(pub_key.split('-')[0])
     e = int(pub_key.split('-')[1])
     md = 1
     for i in range(e):
         md = (md * m) % n
-    print("Encrypted Message" + md)
+    return md
         
-def decrypt():
-    md = int(input("Encrypted Message: "))
-    priv_key = input("Private key: ")
+def decrypt(md, priv_key):
+    #fix input
+    md = int(md)
     n = int(priv_key.split('-')[0])
     d = int(priv_key.split('-')[1])
     m = 1
     for i in range(d):
         m = (m * md) % n
     #print(convertFromNumber(m))
-    print("Decrypted Message:" + m)
+    return m
 
     
 class Breeze_block:        
@@ -126,9 +125,13 @@ def main():
                 print("3 - Back")
                 action = input("Enter: ")
                 if action.lower() == "1":
-                    encrypt()
+                    m = input("Message: ")
+                    pub_key = input("Public Key: ")
+                    print(encrypt(m,pub_key))
                 elif action.lower() == "2":
-                    decrypt()
+                    md = input("Encrypted Message: ")
+                    priv_key = input("Private Key: ")
+                    print(decrypt(md,priv_key))
                 elif action.lower() == "0":
                     exit = 1
                     break
