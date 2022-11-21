@@ -61,13 +61,12 @@ def decrypt(md, priv_key):
     #print(convertFromNumber(m))
     return m
 
-def transact():
-        current_coin = input("Enter current coin: ")
-        public_key = input("Enter the public key of the user you wish to transact to: ")
-        private_key = input("Enter your private key: ")
-
+def transact(current_coin,public_key,private_key):
         message = str(current_coin) + "-" + str(public_key)
         md = hashlib.sha256(message).hexdigest()
+        signature = encrypt(md,private_key)
+        coin = message + "-" + signature
+        return coin
         
 def proof_of_work(transactions,previous_hash,difficulty):
         max_nonce = 2 ** 32
@@ -90,8 +89,6 @@ class Breeze_block:
         
         nonce, hash = proof_of_work(transactions, previous_hash,difficulty)
         self.block_data = previous_hash + "-" + transactions + "-" + hex(nonce) + "-" + hash
-        
-
 
 def main():
     exit = 0
@@ -104,7 +101,10 @@ def main():
         print("4 - Encrypt/decrypt a message")
         action = input("Enter: ")
         if action.lower() == "1":
-            print("Transaction complete")
+            current_coin = input("Current Coin: ")
+            pub_key = input("Recipient's Public Key: ")
+            priv_key = input("Private Key: ")
+            print("Coin: " + transact(current_coin,pub_key,priv_key))
         elif action.lower() == "0" or exit:
             break
         elif action.lower() == "2":
