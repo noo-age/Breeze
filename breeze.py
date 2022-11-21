@@ -31,10 +31,9 @@ def generate_key_pair():
     private_key = str(n)+ "-" + str(int(d))
     print("Public Key: " + public_key)
     print("Private Key: " + private_key)
-    print("Store key-pairs in a safe, easily accessible location. They are your Breeze identity\n")
     
 def convertToNumber (s):
-    return int.from_bytes(s.encode(), 'big')
+    return int.from_bytes(s.encode('latin-1'), 'big')
 
 def convertFromNumber (n):
     return n.to_bytes(math.ceil(n.bit_length()/8), 'big').decode('latin-1')
@@ -63,7 +62,7 @@ def decrypt(md, priv_key):
 
 def transact(current_coin,public_key,private_key):
         message = str(current_coin) + "-" + str(public_key)
-        md = hashlib.sha256(message).hexdigest()
+        md = hashlib.sha256(message.encode('utf-8')).hexdigest()
         signature = encrypt(md,private_key)
         coin = message + "-" + signature
         return coin
@@ -81,7 +80,6 @@ def proof_of_work(transactions,previous_hash,difficulty):
         return final_nonce, hash_result
     
 class Breeze_block:        
-
     def __init__(self, transactions, previous_hash, difficulty):
         self.transactions = transactions
         self.previous_hash = previous_hash
