@@ -3,7 +3,7 @@ Breeze protocol:
 1) New transactions are broadcast to all nodes.
     a. Group gmail
 2) Each node collects new transactions into a block.
-    a. //TODO File system
+    a. Copy all transactions into transactions.csv, with one line per transaction
 3) Each node works on finding a difficult proof-of-work for its block.
     a. //TODO breeze.py
 4) When a node finds a proof-of-work, it broadcasts the block to all nodes.
