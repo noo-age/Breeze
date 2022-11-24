@@ -5,9 +5,21 @@ from math import gcd as bltin_gcd
 
 def coprime(a, b):
     return bltin_gcd(a, b) == 1
+def egcd(a, b):
+    if a == 0:
+        return (b, 0, 1)
+    else:
+        g, y, x = egcd(b % a, a)
+        return (g, x - (b // a) * y, y)
 
+def modinv(a, m):
+    g, x, y = egcd(a, m)
+    if g != 1:
+        raise Exception('modular inverse does not exist')
+    else:
+        return x % m
 def generate_key_pair():
-    p = int(random.randrange(1000,2000)) 
+    p = int(random.randrange(10000,20000)) 
     q = p+1
     while 1:
         if coprime(p,q):
@@ -22,11 +34,7 @@ def generate_key_pair():
         e += 1
     d = 0
     k = 1
-    while 1:
-        d = (k * totient_n+1)/e
-        if int(d) == d:
-            break
-        k += 1
+    d = modinv(e,totient_n)
     public_key = str(n) + "-" + str(e)
     private_key = str(n)+ "-" + str(int(d))
     print("Public Key: " + public_key)
@@ -44,6 +52,9 @@ def encrypt(m, pub_key):
     m = int(m)
     n = int(pub_key.split('-')[0])
     e = int(pub_key.split('-')[1])
+    print(m)
+    print(n)
+    print(e)
     md = 1
     for i in range(e):
         md = (md * m) % n
