@@ -52,12 +52,7 @@ def encrypt(m, pub_key):
     m = int(m)
     n = int(pub_key.split('-')[0])
     e = int(pub_key.split('-')[1])
-    print(m)
-    print(n)
-    print(e)
-    md = 1
-    for i in range(e):
-        md = (md * m) % n
+    md = pow(m,e,n)
     return md
         
 def decrypt(md, priv_key):
@@ -65,10 +60,8 @@ def decrypt(md, priv_key):
     md = int(md)
     n = int(priv_key.split('-')[0])
     d = int(priv_key.split('-')[1])
-    m = 1
-    for i in range(d):
-        m = (m * md) % n
-    #print(convertFromNumber(m))
+    m = pow(md,d,n)
+
     return m
 
 def transact(current_coin,public_key,private_key):
@@ -101,7 +94,7 @@ class Breeze_block:
 
 def main():
     exit = 0
-    
+
     while (1):
         print("Type in the number of the action you want to take:")
         print("0 - Exit")
