@@ -101,6 +101,7 @@ class Breeze_block:
 
 def main():
     exit = 0
+    
     while (1):
         print("Type in the number of the action you want to take:")
         print("0 - Exit")
