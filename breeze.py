@@ -39,6 +39,7 @@ def generate_key_pair():
     private_key = str(n)+ "-" + str(int(d))
     print("Public Key: " + public_key)
     print("Private Key: " + private_key)
+    return public_key, private_key
     
 def convertToNumber (s):
     return int.from_bytes(s.encode('latin-1'), 'big')
@@ -92,9 +93,39 @@ class Breeze_block:
         nonce, hash = proof_of_work(transactions, previous_hash,difficulty)
         self.block_data = previous_hash + "-" + transactions + "-" + hex(nonce) + "-" + hash
 
+
+#Todo
+def verifyKeys(pub_key, priv_key):
+    return True
+
 def main():
     exit = 0
-
+    pub_key = 0
+    priv_key = 0
+    
+    while 1:
+        print("Type in the number of the action you want to take:")
+        print("0 - Exit")
+        print("1 - Login")
+        print("2 - Register")
+        action = input("Enter: ")
+        if action == "0" or exit:
+            break
+        elif action == "1":
+            pub_key = input("Public Key: ")
+            priv_key = input("Private Key: ")
+            if not verifyKeys:
+                print("Invalid Login")
+                pub_key = 0
+                priv_key = 0
+                break
+            exit = 1
+        elif action == "2":
+            pub_key, priv_key = generate_key_pair()
+            exit = 1
+        if exit:
+            break     
+    exit = 0
     while (1):
         print("Type in the number of the action you want to take:")
         print("0 - Exit")
@@ -106,7 +137,7 @@ def main():
         if action.lower() == "1":
             current_coin = input("Current Coin: ")
             pub_key = input("Recipient's Public Key: ")
-            priv_key = input("Private Key: ")
+            #priv_key = input("Private Key: ")
             print("Coin: " + transact(current_coin,pub_key,priv_key))
         elif action.lower() == "0" or exit:
             break
@@ -128,11 +159,11 @@ def main():
                 action = input("Enter: ")
                 if action.lower() == "1":
                     m = input("Message: ")
-                    pub_key = input("Public Key: ")
+                    #pub_key = input("Public Key: ")
                     print(encrypt(m,pub_key))
                 elif action.lower() == "2":
                     md = input("Encrypted Message: ")
-                    priv_key = input("Private Key: ")
+                    #priv_key = input("Private Key: ")
                     print(decrypt(md,priv_key))
                 elif action.lower() == "0":
                     exit = 1
