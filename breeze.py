@@ -19,24 +19,23 @@ def modinv(a, m):
     else:
         return x % m
 def generate_key_pair():
-    p = int(random.randrange(10000,20000)) 
-    q = p+1
+    #p = int(random.randrange(10000,20000)) 
+    #q = p+1
+    p = 7
+    q = 9
     while 1:
         if coprime(p,q):
             break
         q += 1
     n = p*q
     totient_n = (q -1) * (p-1)
-    e = random.randrange(50,100)
-    while 1:
-        if coprime(n,e):
-            break
+    #e = random.randrange(50,100)
+    e = 5
+    while not coprime(n,e):
         e += 1
-    d = 0
-    k = 1
     d = modinv(e,totient_n)
     public_key = str(n) + "-" + str(e)
-    private_key = str(n)+ "-" + str(int(d))
+    private_key = str(n)+ "-" + str(d)
     print("Public Key: " + public_key)
     print("Private Key: " + private_key)
     return public_key, private_key
@@ -114,7 +113,7 @@ def main():
         elif action == "1":
             pub_key = input("Public Key: ")
             priv_key = input("Private Key: ")
-            if not verifyKeys:
+            if not verifyKeys(pub_key,priv_key):
                 print("Invalid Login")
                 pub_key = 0
                 priv_key = 0
