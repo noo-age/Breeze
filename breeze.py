@@ -31,7 +31,7 @@ def modinv(a, m):
         return x % m
     
 def generate_key_pair():
-    p = int(random.randrange(1000000,2000000)) #generate p,q,n
+    p = int(random.randrange(1000000000000000,2000000000000000)) #generate p,q,n
     while not isPrime(p):
         p = p +1
     q = p+1
@@ -170,8 +170,8 @@ def main():
                 action = input("Enter: ")
                 if action.lower() == "1":
                     m = input("Message: ")
-                    rec_key = input("Recipient's Public Key: ")
-                    print("Encypted Message: ",encrypt(m,rec_key))
+                    #rec_key = input("Recipient's Public Key: ")
+                    print("Encypted Message: ",encrypt(m,pub_key))
                 elif action.lower() == "2":
                     md = input("Encrypted Message: ")
                     #priv_key = input("Private Key: ")
