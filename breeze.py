@@ -54,10 +54,10 @@ def generate_key_pair():
     return public_key, private_key
     
 def convertToNumber (s):
-    return int.from_bytes(s.encode(), 'big')
+    return int.from_bytes(s.encode(), 'little')
 
 def convertFromNumber (n):
-    return n.to_bytes(math.ceil(n.bit_length()/8), 'big').decode()
+    return n.to_bytes(math.ceil(n.bit_length()/8), 'little').decode()
 
 #TODO Fix
 def encrypt(m, pub_key):
