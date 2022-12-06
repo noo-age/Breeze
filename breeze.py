@@ -74,25 +74,23 @@ def decrypt(md, priv_key):
     m = pow(md,d,n)
     m = convertFromNumber(m)
     return m
-
 def transact(current_coin,public_key,private_key):
-        message = str(current_coin) + "-" + str(public_key)
-        md = hashlib.sha256(message.encode('utf-8')).hexdigest()
-        signature = encrypt(md,private_key)
-        coin = message + "-" + signature
-        return coin
-        
+    message = str(current_coin) + "-" + str(public_key)
+    md = hashlib.sha256(message.encode('utf-8')).hexdigest()
+    signature = encrypt(md,private_key)
+    coin = message + "-" + md + "-" + str(signature)
+    return coin
 def proof_of_work(transactions,previous_hash,difficulty):
-        max_nonce = 2 ** 32
-        a = ""
-        hash_result = 0
-        final_nonce = 0
-        for nonce in range(max_nonce):
-            hash_result = hashlib.sha256((str(transactions)+"-"+str(previous_hash)+"-"+str(nonce)).encode('utf-8')).hexdigest()
-            if (str(hash_result))[0:int(difficulty)] == a.zfill(int(difficulty)):
-                final_nonce = nonce
-                break
-        return final_nonce, hash_result
+    max_nonce = 2 ** 32
+    a = ""
+    hash_result = 0
+    final_nonce = 0
+    for nonce in range(max_nonce):
+        hash_result = hashlib.sha256((str(transactions)+"-"+str(previous_hash)+"-"+str(nonce)).encode('utf-8')).hexdigest()
+        if (str(hash_result))[0:int(difficulty)] == a.zfill(int(difficulty)):
+            final_nonce = nonce
+            break
+    return final_nonce, hash_result
     
 class Breeze_block:        
     def __init__(self, transactions, previous_hash, difficulty):
@@ -103,8 +101,6 @@ class Breeze_block:
         nonce, hash = proof_of_work(transactions, previous_hash,difficulty)
         self.block_data = previous_hash + "-" + transactions + "-" + hex(nonce) + "-" + hash
 
-
-#Todo
 def verifyKeys(pub_key, priv_key):
     testMessage = "hi12"
     out = encrypt(testMessage,pub_key)
@@ -150,9 +146,8 @@ def main():
         action = input("Enter: ")
         if action.lower() == "1":
             current_coin = input("Current Coin: ")
-            pub_key = input("Recipient's Public Key: ")
-            #priv_key = input("Private Key: ")
-            print("Coin: " + transact(current_coin,pub_key,priv_key))
+            transact_key = input("Recipient's Public Key: ")
+            print("Coin: " + transact(current_coin,transact_key,priv_key))
         elif action.lower() == "0" or exit:
             break
         elif action.lower() == "2":
