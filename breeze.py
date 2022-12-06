@@ -54,10 +54,9 @@ def generate_key_pair():
     return public_key, private_key
     
 def convertToNumber (s):
-    return int.from_bytes(s.encode(), 'little')
-
+    return int.from_bytes(s.encode('utf-8'), 'little')
 def convertFromNumber (n):
-    return n.to_bytes(math.ceil(n.bit_length()/8), 'little').decode()
+    return n.to_bytes(math.ceil(n.bit_length()/8), 'little').decode('utf-8')
 
 #TODO Fix
 def encrypt(m, pub_key):
@@ -107,14 +106,17 @@ class Breeze_block:
 
 #Todo
 def verifyKeys(pub_key, priv_key):
-    return True
+    testMessage = "hi12"
+    out = encrypt(testMessage,pub_key)
+    out = decrypt(out,priv_key)
+    return out == testMessage
 
 def main():
     exit = 0
     pub_key = 0
     priv_key = 0
     
-    while 1:
+    while (1): #login/registration
         print("Type in the number of the action you want to take:")
         print("0 - Exit")
         print("1 - Login")
@@ -129,15 +131,16 @@ def main():
                 print("Invalid Login")
                 pub_key = 0
                 priv_key = 0
-                break
-            exit = 1
+            else:
+                exit = 1
         elif action == "2":
             pub_key, priv_key = generate_key_pair()
             exit = 1
         if exit:
             break     
     exit = 0
-    while (1):
+    
+    while (1): #account actions
         print("Type in the number of the action you want to take:")
         print("0 - Exit")
         print("1 - Transact")
