@@ -119,6 +119,7 @@ def main():
         print("2 - Register")
         action = input("Enter: ")
         if action == "0" or exit:
+            exit = 0
             break
         elif action == "1":
             pub_key = input("Public Key: ")
@@ -136,7 +137,7 @@ def main():
             break     
     exit = 0
     
-    while (1): #account actions
+    while (1): #account actions        
         print("Type in the number of the action you want to take:")
         print("0 - Exit")
         print("1 - Transact")
