@@ -80,6 +80,25 @@ def transact(current_coin,public_key,private_key):
     signature = encrypt(md,private_key)
     coin = message + "-" + md + "-" + str(signature)
     return coin
+def sign(m,priv_key): #Sign a message using RSA private key
+    md = hashlib.sha256(m.encode('utf-8')).hexdigest()
+    signature = [0] * 6
+    for i in range(6):
+        begin = i * 12
+        end = (i+1) * 12
+        if i == 6:
+            end = 64
+        signature[i] = encrypt(md[begin:end],priv_key)
+    return '.'.join(map(str, signature))
+def verify(m,signature,pub_key): #Verify a message using RSA public ke;y
+    signature = signature.split('.')
+    md = hashlib.sha256(m.encode('utf-8')).hexdigest()
+    origin = ""
+    for i in range(6):
+        origin += decrypt(signature[i],pub_key)
+    if md == origin:
+        return True
+    return False
 def proof_of_work(transactions,previous_hash,difficulty):
     max_nonce = 2 ** 32
     a = ""
@@ -118,9 +137,8 @@ def main():
         print("1 - Login")
         print("2 - Register")
         action = input("Enter: ")
-        if action == "0" or exit:
-            exit = 0
-            break
+        if action == "0":
+            return
         elif action == "1":
             pub_key = input("Public Key: ")
             priv_key = input("Private Key: ")
@@ -134,16 +152,18 @@ def main():
             pub_key, priv_key = generate_key_pair()
             exit = 1
         if exit:
-            break     
+            break  
     exit = 0
     
-    while (1): #account actions        
+    while (1): #account actions   
         print("Type in the number of the action you want to take:")
         print("0 - Exit")
         print("1 - Transact")
         print("2 - Create Block")
         print("3 - Generate key-pair")
         print("4 - Encrypt/decrypt a message")
+        print("5 - Sign a Message")
+        print("6 - Verify Message")
         action = input("Enter: ")
         if action.lower() == "1":
             current_coin = input("Current Coin: ")
@@ -179,7 +199,18 @@ def main():
                     exit = 1
                     break
                 elif action.lower() == "3":
-                    break       
+                    break      
+        elif action.lower() == "5":
+            m = input("Message: ")
+            print("Signed Message: " + m + "-" + sign(m,priv_key))
+        elif action.lower() == "6":
+            m = input("Message: ")
+            s = input("Signature: ")
+            #TODO Add Public Key Functionality
+            if verify(m,s,pub_key):
+                print("Valid")
+            else:
+                print("Invalid")
         else:
             print("Invalid Input")
         if exit:
