@@ -3,6 +3,10 @@ import random
 import math
 from math import gcd as bltin_gcd
 
+# '.' separates units of signature
+# '-' separates elements of keys
+
+
 def coprime(a, b):
     return bltin_gcd(a, b) == 1
 def isPrime(n):
@@ -74,11 +78,10 @@ def decrypt(md, priv_key):
     m = pow(md,d,n)
     m = convertFromNumber(m)
     return m
-def transact(current_coin,public_key,private_key):
-    message = str(current_coin) + "-" + str(public_key)
-    md = hashlib.sha256(message.encode('utf-8')).hexdigest()
-    signature = encrypt(md,private_key)
-    coin = message + "-" + md + "-" + str(signature)
+def transact(current_coin,pub_key,priv_key):
+    message = str(current_coin) + "-" + str(pub_key)
+    signature = sign(message,priv_key)
+    coin = message + "-" + str(signature)
     return coin
 def sign(m,priv_key): #Sign a message using RSA private key
     md = hashlib.sha256(m.encode('utf-8')).hexdigest()
