@@ -4,8 +4,9 @@ import math
 from math import gcd as bltin_gcd
 
 # '.' separates units of signature
-# '-' separates elements of keys
-
+# '_' separates elements of keys
+# '-' separates transaction items
+# '=' separates block items
 
 def coprime(a, b):
     return bltin_gcd(a, b) == 1
@@ -51,8 +52,8 @@ def generate_key_pair():
         
     d = modinv(e,totient_n) #calculate modular inverse of e with respect to totient(n)
     
-    public_key = str(n) + "-" + str(e)
-    private_key = str(n)+ "-" + str(d)
+    public_key = str(n) + "_" + str(e)
+    private_key = str(n)+ "_" + str(d)
     print("Public Key: " + public_key)
     print("Private Key: " + private_key)
     return public_key, private_key
@@ -66,15 +67,15 @@ def convertFromNumber (n):
 def encrypt(m, pub_key):
     m = convertToNumber(m) 
     #m = int(m)
-    n = int(pub_key.split('-')[0])
-    e = int(pub_key.split('-')[1])
+    n = int(pub_key.split('_')[0])
+    e = int(pub_key.split('_')[1])
     md = pow(m,e,n)
     return md
         
 def decrypt(md, priv_key):
     md = int(md)
-    n = int(priv_key.split('-')[0])
-    d = int(priv_key.split('-')[1])
+    n = int(priv_key.split('_')[0])
+    d = int(priv_key.split('_')[1])
     m = pow(md,d,n)
     m = convertFromNumber(m)
     return m
@@ -121,7 +122,7 @@ class Breeze_block:
         self.difficulty = difficulty
         
         nonce, hash = proof_of_work(transactions, previous_hash,difficulty)
-        self.block_data = previous_hash + "-" + transactions + "-" + hex(nonce) + "-" + hash
+        self.block_data = previous_hash + "=" + transactions + "=" + hex(nonce) + "=" + hash
 
 def verifyKeys(pub_key, priv_key):
     testMessage = "hi12"
@@ -166,7 +167,7 @@ def main():
         print("3 - Generate key-pair")
         print("4 - Encrypt/decrypt a message")
         print("5 - Sign a Message")
-        print("6 - Verify Message")
+        print("6 - Validate Message")
         action = input("Enter: ")
         if action.lower() == "1":
             current_coin = input("Current Coin: ")
@@ -175,7 +176,12 @@ def main():
         elif action.lower() == "0" or exit:
             break
         elif action.lower() == "2":
-            transactions  = input("transactions: ")
+            transactions_count  = int(input("# of transactions: "))
+            transactions = ""
+            for i in range(transactions_count):
+                transactions += input("transaction " + str(i + 1) + ": ")
+                if i != transactions_count-1:
+                    transactions += "="
             previous_hash = input("previous_hash: ")
             difficulty = input("difficulty: ")
             block = Breeze_block(transactions,previous_hash,difficulty)
