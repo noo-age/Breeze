@@ -9,6 +9,7 @@ from math import gcd as bltin_gcd
 # '=' separates block items
 
 block_size = 4
+global_diff = 4
 
 def coprime(a, b):
     return bltin_gcd(a, b) == 1
@@ -187,8 +188,7 @@ def main():
                 if i != transactions_count-1:
                     transactions += "="
             previous_hash = input("previous_hash: ")
-            difficulty = input("difficulty: ")
-            block = Breeze_block(transactions,previous_hash,difficulty)
+            block = Breeze_block(transactions,previous_hash,global_diff)
             print(block.block_data)
         elif action.lower() == "3":
             generate_key_pair()
