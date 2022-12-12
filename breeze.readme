@@ -1,22 +1,12 @@
 Breeze protocol: 
 
-    File Organization:
-        Clone Antelope10/blockchain into a directory named "Breeze"
-            blocks.csv
-            transactions.csv
-            breeze.py
-            breeze.readme
-
     P2P Network:
-        Join group gmail labeled "Breeze"
+        Reply to group gmail
 
     Transactions:
         Use the transact function in breeze.py and send the result into the group gmail to transfer Breeze
-        Copy any transactions you receive into transactions.csv
+        Copy any transactions or blocks you receive into files labeled breeze transactions and breeze blocks respectively
 
     Blocks: 
-        Create a block by calling the create block function in breeze.py while blocks.csv and transactions.csv are in the same directory
+        Create a block by calling the create block function in breeze.py on loose transactions, and by adding the hash of the previous block
         Broadcast blocks through the group gmail
-        Copy any blocks you receive into blocks.csv
-            In the event of a conflict between blocks, create two separate blocks_k.csv files, wait for a clear winner between chains, and delete the shorter chain
-            Create new blocks using the hash of the longest chain
