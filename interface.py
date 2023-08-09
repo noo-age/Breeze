@@ -1,6 +1,4 @@
-
 import breeze as b
-
 
 def main():
     exit = 0
