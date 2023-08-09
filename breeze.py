@@ -3,11 +3,14 @@ import random
 import math
 from math import gcd as bltin_gcd
 
-# '.' separates units of signature
-# '_' separates elements of keys
-# '-' separates transaction items
-# '=' separates block items
+'''
+'.' separates units of signature
+'_' separates elements of keys
+'-' separates transaction items
+'=' separates block items
+'''
 
+# math helper functions
 def coprime(a, b):
     return bltin_gcd(a, b) == 1
 def isPrime(n):
@@ -34,7 +37,16 @@ def modinv(a, m):
         raise Exception('modular inverse does not exist')
     else:
         return x % m
-    
+  
+  
+#encoding helper functions
+def convertToNumber (s):
+    return int.from_bytes(s.encode('utf-8'), 'little')
+def convertFromNumber (n):
+    return n.to_bytes(math.ceil(n.bit_length()/8), 'little').decode('utf-8')
+
+
+#RSA implementation
 def generate_key_pair():
     p = int(random.randrange(1000000000000000,2000000000000000)) #generate p,q,n
     while not isPrime(p):
@@ -57,14 +69,8 @@ def generate_key_pair():
     print("Public Key: " + public_key)
     print("Private Key: " + private_key)
     return public_key, private_key
-    
-def convertToNumber (s):
-    return int.from_bytes(s.encode('utf-8'), 'little')
-def convertFromNumber (n):
-    return n.to_bytes(math.ceil(n.bit_length()/8), 'little').decode('utf-8')
 
-#TODO Fix
-def encrypt(m, pub_key):
+def encrypt(m, pub_key): #RSA encrypt
     m = convertToNumber(m) 
     #m = int(m)
     n = int(pub_key.split('_')[0])
@@ -72,19 +78,21 @@ def encrypt(m, pub_key):
     md = pow(m,e,n)
     return md
         
-def decrypt(md, priv_key):
+def decrypt(md, priv_key): #RSA decrypt
     md = int(md)
     n = int(priv_key.split('_')[0])
     d = int(priv_key.split('_')[1])
     m = pow(md,d,n)
     m = convertFromNumber(m)
     return m
-def transact(current_coin,pub_key,priv_key):
+
+def transact(current_coin,pub_key,priv_key): #returns new coin given from priv_key owner to pub_key owner
     message = str(current_coin) + "-" + str(pub_key)
     signature = sign(message,priv_key)
     coin = message + "-" + str(signature)
     return coin
-def sign(m,priv_key): #Sign a message using RSA private key
+
+def sign(m,priv_key): #sign a message using RSA private key
     md = hashlib.sha256(m.encode('utf-8')).hexdigest()
     signature = [0] * 6
     for i in range(6):
@@ -94,6 +102,7 @@ def sign(m,priv_key): #Sign a message using RSA private key
             end = 64
         signature[i] = encrypt(md[begin:end],priv_key)
     return '.'.join(map(str, signature))
+
 def verify(m,signature,pub_key): #Verify a message using RSA public ke;y
     signature = signature.split('.')
     md = hashlib.sha256(m.encode('utf-8')).hexdigest()
@@ -103,7 +112,8 @@ def verify(m,signature,pub_key): #Verify a message using RSA public ke;y
     if md == origin:
         return True
     return False
-def proof_of_work(transactions,previous_hash,difficulty):
+
+def proof_of_work(transactions,previous_hash,difficulty): #adds proof-of-work to block
     max_nonce = 2 ** 32
     a = ""
     hash_result = 0
@@ -115,7 +125,8 @@ def proof_of_work(transactions,previous_hash,difficulty):
             break
     return final_nonce, hash_result
     
-class Breeze_block:        
+#class definition
+class Breeze_block:  
     def __init__(self, transactions, previous_hash, difficulty):
         self.transactions = transactions
         self.previous_hash = previous_hash
@@ -129,7 +140,6 @@ def verifyKeys(pub_key, priv_key):
     out = encrypt(testMessage,pub_key)
     out = decrypt(out,priv_key)
     return out == testMessage
-
 def main():
     exit = 0
     pub_key = 0
@@ -215,7 +225,7 @@ def main():
         elif action.lower() == "6":
             m = input("Message: ")
             s = input("Signature: ")
-            #TODO Add Public Key Functionality
+            
             if verify(m,s,pub_key):
                 print("Valid")
             else:
