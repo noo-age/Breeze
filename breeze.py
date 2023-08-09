@@ -178,6 +178,8 @@ def main():
         print("4 - Encrypt/decrypt a message")
         print("5 - Sign a Message")
         print("6 - Validate Message")
+        print("7 - Verify Coin")
+        print("8 - Check Balance")
         action = input("Enter: ")
         if action.lower() == "1":
             current_coin = input("Current Coin: ")
@@ -193,8 +195,7 @@ def main():
                 if i != transactions_count-1:
                     transactions += "="
             previous_hash = input("previous_hash: ")
-            difficulty = input("difficulty: ")
-            block = Breeze_block(transactions,previous_hash,difficulty)
+            block = Breeze_block(transactions,previous_hash,global_diff)
             print(block.block_data)
         elif action.lower() == "3":
             generate_key_pair()
@@ -230,6 +231,34 @@ def main():
                 print("Valid")
             else:
                 print("Invalid")
+        elif action == "7":
+            transaction = input("transaction: ").split('-')
+            last_sig = transaction[-1]
+            last_owner = transaction[-4]
+            last_message = '-'.join(transaction[0:-1])
+            if verify(last_message,last_sig,last_owner):
+                print("Valid Coin")
+                print("Coin Owner: " + transaction[-2])
+            else:
+                print("Invalid Coin")
+        elif action == "8":
+            block_count = int(input("# of Blocks: "))
+            owned = [False] * 5
+            count = 0
+            for i in range(block_count):
+                b = input("block " + str(i+1) + ": ")
+                ts = b.split('=')[1:-2]
+                for t in ts:
+                    if t.split('-')[-2] == pub_key:
+                        owned[t[0]] = True
+                    else:
+                        owned[t[0]] = False
+            for c in owned:
+                if c:
+                    count += 1
+            print("Balance = " + str(count))
+
+
         else:
             print("Invalid Input")
         if exit:
